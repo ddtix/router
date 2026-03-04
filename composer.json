@@ -1,0 +1,17 @@
+{
+    "name": "ddtix/router",
+    "description": "Fast Router",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ddtix\\Router\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dmitrii Tikhonov",
+            "email": "dd.tikh@gmail.com"
+        }
+    ],
+    "require": {}
+}
