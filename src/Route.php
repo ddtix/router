@@ -29,13 +29,11 @@ class Route
 
             $controllerName = $url[1] ?? false;
 
-            if ($controllerName && file_exists($filePath)) {
-                $connector = 'Controllers\\' . $controllerName;
-            } elseif (empty($controllerName)) {
-                $connector = 'Controllers\\Index';
-            } else {
-                $connector = 'Controllers\\NotFound';
-            }
+            $connector = match (true) {
+                !$controllerName => 'Controllers\\Index',
+                file_exists($filePath) => "Controllers\\{$controllerName}",
+                default => 'Controllers\\NotFound',
+            };
 
             $result = $connector::index();
 
