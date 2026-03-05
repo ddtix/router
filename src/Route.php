@@ -16,8 +16,6 @@ class Route
 
             if (file_exists($filePath)) {
                 require_once $filePath;
-            } else {
-                $filePath = getenv('BASE_PATH') . '/../src/Controllers/Notfound.php';
             }
         });
 
