@@ -2,8 +2,6 @@
 
 namespace Ddtix\Router;
 
-use Controllers\Test;
-
 class Route
 {
     public static function load(): void
