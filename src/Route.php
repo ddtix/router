@@ -22,10 +22,9 @@ class Route
         if (isset($_SERVER['REQUEST_URI']) && is_string($_SERVER['REQUEST_URI'])) {
 
             $url = explode('/', $_SERVER['REQUEST_URI']);
-
-            $filePath = getenv('BASE_PATH') . '/../src/Controllers/' . $url[1] . '.php';
-
             $controllerName = $url[1] ?? false;
+
+            $filePath = getenv('BASE_PATH') . '/../src/Controllers/' . $controllerName . '.php';
 
             $connector = match (true) {
                 !$controllerName => 'Controllers\\Index',
