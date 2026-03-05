@@ -2,8 +2,6 @@
 
 namespace Ddtix\Router;
 
-use Controllers;
-
 class Route
 {
     public static function load(): void
@@ -12,34 +10,32 @@ class Route
             $parts = explode('\\', $className);
             $fileName = array_pop($parts);
             $folders = implode('/', $parts);
-            $filePath = getenv('BASE_PATH') . '/../src/' . $folders . '/' . $fileName . '.php';
+            $filePath = getenv('BASE_PATH') . "/../src/{$folders}/{$fileName}.php";
 
             if (file_exists($filePath)) {
                 require_once $filePath;
             }
         });
 
-        if (isset($_SERVER['REQUEST_URI']) && is_string($_SERVER['REQUEST_URI'])) {
+        $url = explode('/', $_SERVER['REQUEST_URI']);
 
-            $url = explode('/', $_SERVER['REQUEST_URI']);
-            $controllerName = $url[1] ?? false;
+        $controllerName = $url[1] ?? false;
 
-            $filePath = getenv('BASE_PATH') . '/../src/Controllers/' . $controllerName . '.php';
+        $filePath = getenv('BASE_PATH') . "/../src/Controllers/{$controllerName}.php";
 
-            $connector = match (true) {
-                !$controllerName => 'Controllers\\Index',
-                file_exists($filePath) => "Controllers\\{$controllerName}",
-                default => 'Controllers\\NotFound',
-            };
+        $connector = match (true) {
+            !$controllerName => 'Controllers\\Index',
+            file_exists($filePath) => "Controllers\\{$controllerName}",
+            default => 'Controllers\\NotFound',
+        };
 
-            $result = $connector::index();
+        $result = $connector::index();
 
-            echo match (true) {
-                is_string($result), is_numeric($result) => $result,
-                is_array($result), is_object($result) => json_encode($result, JSON_UNESCAPED_UNICODE),
-                is_bool($result) => $result ? 'true' : 'false',
-                default => '',
-            };
-        }
+        echo match (true) {
+            is_string($result), is_numeric($result) => $result,
+            is_array($result), is_object($result) => json_encode($result, JSON_UNESCAPED_UNICODE),
+            is_bool($result) => $result ? 'true' : 'false',
+            default => '',
+        };
     }
 }
